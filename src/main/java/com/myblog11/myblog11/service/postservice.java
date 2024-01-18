@@ -14,4 +14,8 @@ public interface postservice {
     Postdto getPostById(long Id);
 
     List<Postdto> getAllData();
+
+    List<Postdto>   getAllInPaginationFormat(int pageNo,int pageSize);
+
+    List<Postdto> getAllDataFromDB();
 }

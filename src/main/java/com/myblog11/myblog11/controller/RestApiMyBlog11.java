@@ -48,4 +48,16 @@ public class RestApiMyBlog11 {
         return fdtos;
     }
 
+    //Here We Understand The Concept Of Pagination Create the method through which we able to understand the Pagination concept
+    //url-> http://localhost:8080/api/myblog/Pagination?pageNo=0&pageSize=4
+    @GetMapping("/Pagination")
+    public List<Postdto> getAllInPaginationFormat(
+            @RequestParam(name="pageNo",required = false,defaultValue="0") int pageNo,
+            @RequestParam(name="pageSize",required=false,defaultValue = "3") int pageSize
+    ){
+        List<Postdto> allInPaginationFormat = postserv.getAllInPaginationFormat(pageNo, pageSize);
+
+        return allInPaginationFormat;
+    }
+
 }

@@ -5,6 +5,8 @@ import com.myblog11.myblog11.exception.ResourceNotFoundException;
 import com.myblog11.myblog11.payload.Postdto;
 import com.myblog11.myblog11.repository.postRepository;
 import com.myblog11.myblog11.service.postservice;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +23,23 @@ public class postServiceImpl implements postservice {
 
     //Constructor Based Dependency injection gonna done here instead Of AUTOWIRED
     private postRepository postrepo;
+
+
+    //Method Created for access all the element in the restControllerPractice
+    @Override
+    public List<Postdto> getAllDataFromDB() {
+        List<Post> allData = postrepo.findAll();
+        List<Postdto> alldto = allData.stream().map(m -> mapToDto(m)).collect(Collectors.toList());
+        return alldto;
+    }
+    //Method Of Pagination concept Described/Created
+    @Override
+    public List<Postdto> getAllInPaginationFormat(int pageNo,int pageSize) {
+        PageRequest pagable = PageRequest.of(pageNo, pageSize);
+        Page<Post> posts2 = postrepo.findAll(pagable);
+        List<Postdto> listdtos = posts2.stream().map(n -> mapToDto(n)).collect(Collectors.toList());
+        return listdtos;
+    }
 
     @Override
     public List<Postdto> getAllData() {
@@ -41,12 +60,12 @@ public class postServiceImpl implements postservice {
         post.setContent(postdto.getContent());
         Post savedBlog = postrepo.save(post);
 
-
-        Postdto dto=new Postdto();
-        dto.setContent(savedBlog.getContent());
-        dto.setDescription(savedBlog.getDescription());
-        dto.setTitle(savedBlog.getTitle());
-
+        Postdto dto = mapToDto(savedBlog);
+//
+//        Postdto dto=new Postdto();
+//        dto.setContent(savedBlog.getContent());
+//        dto.setDescription(savedBlog.getDescription());
+//        dto.setTitle(savedBlog.getTitle());
 
         return dto;
     }
