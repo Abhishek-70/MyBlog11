@@ -1,6 +1,5 @@
 package com.myblog11.myblog11.controller;
 
-import com.myblog11.myblog11.entity.Post;
 import com.myblog11.myblog11.payload.Postdto;
 import com.myblog11.myblog11.service.postservice;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/myblog")
+@RequestMapping("/api/blog")
 public class RestApiMyBlog11 {
 
     //now we have to crete a class of the service layer which deal with the database,using CONSTRUCTOR way we can Inject DI without AUTOWIRED,
@@ -48,16 +47,42 @@ public class RestApiMyBlog11 {
         return fdtos;
     }
 
-    //Here We Understand The Concept Of Pagination Create the method through which we able to understand the Pagination concept
-    //url-> http://localhost:8080/api/myblog/Pagination?pageNo=0&pageSize=4
+    //1.here  we show the concept of pagenation with pageNo and pageSize only
+    //url->http://localhost:8080/api/blog?pageNo=0&pageSize=3
+
+//    @GetMapping
+//    public List<Postdto> getAllData(
+//            @RequestParam(name="pageNo",required = false,defaultValue="0")int pageNo,
+//            @RequestParam(name="pageSize",required = false,defaultValue = "3")int pageSize
+//    ){
+//        List<Postdto> allInPaginationFormat = postserv.getAllInPaginationFormat(pageNo, pageSize);
+//        return allInPaginationFormat;
+//    }
+
+
+    //2.Here we create the pagination concept with extends sortBy feature of sorting.
+    //url-> http://localhost:8080/api/blog/Pagination?pageNo=0&pageSize=4&sortBy=title
+//    @GetMapping("/Pagination")
+//    public List<Postdto> getAllData(
+//            @RequestParam(name="pageNo",required = false,defaultValue="0")int pageNo,
+//            @RequestParam(name="pageSize",required = false,defaultValue = "10")int pageSize,
+//            @RequestParam(name = "sortBy",required = false,defaultValue = "id")String sortBy
+//    ){
+//        List<Postdto> allInPaginationFormat = postserv.getAllInPaginationFormat(pageNo, pageSize, sortBy);
+//        return allInPaginationFormat;
+//    }
+
+    //3.Here crete a new feature of pagination with sortingDirection(sortDir),
+    //url->http://localhost:8080/api/blog/Pagination?pageNo=0&pageSize=10&sortBy=title&sortDir=desc
     @GetMapping("/Pagination")
-    public List<Postdto> getAllInPaginationFormat(
-            @RequestParam(name="pageNo",required = false,defaultValue="0") int pageNo,
-            @RequestParam(name="pageSize",required=false,defaultValue = "3") int pageSize
+    public List<Postdto> getAllData(
+            @RequestParam(name="pageNo",required=false,defaultValue="0")int pageNo,
+            @RequestParam(name="pageSize",required = false,defaultValue = "3")int pageSize,
+            @RequestParam(name="sortBy",required = false,defaultValue ="id")String sortBy,
+            @RequestParam(name="sortDir",required = false,defaultValue = "id")String sortDir
     ){
-        List<Postdto> allInPaginationFormat = postserv.getAllInPaginationFormat(pageNo, pageSize);
 
-        return allInPaginationFormat;
+        List<Postdto> allInPaginationFormat2 = postserv.getAllInPaginationFormat2(pageNo, pageSize, sortBy, sortDir);
+        return allInPaginationFormat2;
     }
-
 }

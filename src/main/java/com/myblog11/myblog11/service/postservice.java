@@ -13,9 +13,12 @@ public interface postservice {
 
     Postdto getPostById(long Id);
 
+    //Method Of Pagination concept Described/Created
+    List<Postdto> getAllInPaginationFormat(int pageNo, int pageSize, String sortBy);
+
     List<Postdto> getAllData();
 
-    List<Postdto>   getAllInPaginationFormat(int pageNo,int pageSize);
+    List<Postdto>   getAllInPaginationFormat2(int pageNo, int pageSize, String sortBy,String sortDir);
 
     List<Postdto> getAllDataFromDB();
 }

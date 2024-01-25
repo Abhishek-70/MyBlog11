@@ -7,10 +7,10 @@ import com.myblog11.myblog11.repository.postRepository;
 import com.myblog11.myblog11.service.postservice;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,13 +34,36 @@ public class postServiceImpl implements postservice {
     }
     //Method Of Pagination concept Described/Created
     @Override
-    public List<Postdto> getAllInPaginationFormat(int pageNo,int pageSize) {
-        PageRequest pagable = PageRequest.of(pageNo, pageSize);
-        Page<Post> posts2 = postrepo.findAll(pagable);
-        List<Postdto> listdtos = posts2.stream().map(n -> mapToDto(n)).collect(Collectors.toList());
-        return listdtos;
+    public List<Postdto> getAllInPaginationFormat(int pageNo, int pageSize, String sortBy) {
+
+        //1.//This method used before the sortby concept
+//        PageRequest pagable = PageRequest.of(pageNo, pageSize);
+//        Page<Post> posts2 = postrepo.findAll(pagable);
+//        List<Postdto> listdtos = posts2.stream().map(n -> mapToDto(n)).collect(Collectors.toList());
+//        return listdtos;
+
+        //2. This Method is After introduce of sortBy Pagination Concept
+        PageRequest pageRequest = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<Post> allObj = postrepo.findAll(pageRequest);
+        List<Post> posts= allObj.getContent();
+        List<Postdto> postdto = posts.stream().map(n -> mapToDto(n)).collect(Collectors.toList());
+        return postdto;
     }
 
+    //3.here we extend the feature of sorting Direction(sortDir), which is default in ascending order.
+    @Override
+    public List<Postdto> getAllInPaginationFormat2(int pageNo, int pageSize, String sortBy, String sortDir) {
+        //using Ternary Operator which is used to sort the code of if-else statement code,HERE understand the flow go with the pagable concept
+        Sort sortobj = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+        //then using overloaded (Of()) method
+        PageRequest pageRequest = PageRequest.of(pageNo, pageSize, sortobj);
+        //repository layer used to perform operation with database
+        Page<Post> allpost = postrepo.findAll(pageRequest);
+        List<Postdto> postdtos = allpost.stream().map(n -> mapToDto(n)).collect(Collectors.toList());
+        return postdtos;
+
+    }
     @Override
     public List<Postdto> getAllData() {
 
