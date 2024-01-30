@@ -34,16 +34,21 @@ import java.util.Optional;
         comment.setEmail(commentDto.getEmail());
         comment.setPost(post);
 
-        comment = commentRepository.save(comment);
+          Comment saveComment = commentRepository.save(comment);
 
-        //This CommentDto Is Specific CommentDto Which we set To The ResponseEntity To Show the content On the Console.
+          //This CommentDto Is Specific CommentDto Which we set To The ResponseEntity To Show the content On the Console.
         //If we Like Use another Dto Class which have some Different parameter than that can also used
         CommentDto dto = new CommentDto();
-        dto.setId(comment.getId());
-        dto.setText(comment.getText());
-        dto.setEmail(comment.getEmail());
+        dto.setId(saveComment.getId());
+        dto.setText(saveComment.getText());
+        dto.setEmail(saveComment.getEmail());
         return dto;
     }
+
+    @Override
+    public void deleteComments(long id) {
+       commentRepository.deleteById(id);
+          }
 }
 
 

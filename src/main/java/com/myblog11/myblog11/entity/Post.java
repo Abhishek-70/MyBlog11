@@ -18,13 +18,11 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private String title;
-
     private String description;
-
     private String content;
 
+//here concept of composition concept is their for the tightly coupling between post and Comment,Likes Entity
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 

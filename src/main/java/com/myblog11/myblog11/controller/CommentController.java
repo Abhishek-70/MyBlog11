@@ -17,7 +17,10 @@ public class CommentController {
     }
 
     @PostMapping
-    //url->http://localhost:8080/api/comments?postId=3
+    //1.Create a comment while saving comment data to database
+    // url->http://localhost:8080/api/comments?postId=3   //the basic difference between a URL and URI is that whole path is called url and
+    //whole path except last Path(comments) is uri.
+
     public ResponseEntity<CommentDto> createComment(
             @RequestBody CommentDto commentDto,
             @RequestParam long postId
@@ -25,5 +28,15 @@ public class CommentController {
         CommentDto dtos = commentService.createComment(commentDto, postId);
 
         return new ResponseEntity<>(dtos, HttpStatus.CREATED);
+    }
+
+    //2.Delete comment from the database using the url
+    //url-> http://localhost:8080/api/comments , here pass the id for the comment to delete via (pathvariable/{id})
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteComment(
+            @PathVariable long id
+    ){
+        commentService.deleteComments(id);
+        return new ResponseEntity<>("Comment Is Deleted",HttpStatus.OK);
     }
 }
