@@ -20,6 +20,7 @@ public class RestApiMyBlog11 {
         this.postserv = postserv;
     }
 
+    //url-> http://localhost:8080/api/blog
     @PostMapping
     public ResponseEntity<?> createPost(@RequestBody Postdto postdto){
 
@@ -85,4 +86,15 @@ public class RestApiMyBlog11 {
         List<Postdto> allInPaginationFormat2 = postserv.getAllInPaginationFormat2(pageNo, pageSize, sortBy, sortDir);
         return allInPaginationFormat2;
     }
+
+    //#.Delete a post from the database obtain by this operation using url
+    //url->http://localhost:8080/api/blog/4
+@DeleteMapping("/{id}")
+    public ResponseEntity<String> deletePost(
+            @PathVariable long id
+    ){
+        postserv.deltePostById(id);
+        return new ResponseEntity<>("post is Deleted",HttpStatus.OK);
+    }
+
 }

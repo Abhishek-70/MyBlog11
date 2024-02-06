@@ -1,7 +1,7 @@
 package com.myblog11.myblog11.entity;
 
 import com.myblog11.myblog11.payload.Postdto;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

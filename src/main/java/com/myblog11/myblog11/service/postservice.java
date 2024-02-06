@@ -21,4 +21,6 @@ public interface postservice {
     List<Postdto>   getAllInPaginationFormat2(int pageNo, int pageSize, String sortBy,String sortDir);
 
     List<Postdto> getAllDataFromDB();
+
+    void deltePostById(long postId);
 }

@@ -5,6 +5,7 @@ import com.myblog11.myblog11.exception.ResourceNotFoundException;
 import com.myblog11.myblog11.payload.Postdto;
 import com.myblog11.myblog11.repository.postRepository;
 import com.myblog11.myblog11.service.postservice;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -17,14 +18,15 @@ import java.util.stream.Collectors;
 public class postServiceImpl implements postservice {
 
 
-    public postServiceImpl(postRepository postrepo) {
+    public postServiceImpl(postRepository postrepo,ModelMapper modelMapper) {
         this.postrepo = postrepo;
+        this.modelMapper=modelMapper;
     }
 
     //Constructor Based Dependency injection gonna done here instead Of AUTOWIRED
     private postRepository postrepo;
 
-
+private ModelMapper modelMapper;
     //Method Created for access all the element in the restControllerPractice
     @Override
     public List<Postdto> getAllDataFromDB() {
@@ -32,6 +34,12 @@ public class postServiceImpl implements postservice {
         List<Postdto> alldto = allData.stream().map(m -> mapToDto(m)).collect(Collectors.toList());
         return alldto;
     }
+
+    @Override
+    public void deltePostById(long id) {
+        postrepo.deleteById(id);
+    }
+
     //Method Of Pagination concept Described/Created
     @Override
     public List<Postdto> getAllInPaginationFormat(int pageNo, int pageSize, String sortBy) {
@@ -112,21 +120,20 @@ public class postServiceImpl implements postservice {
 
     //Create Method to Convert Post(Entity) into PostDto(Dto class)
     public Postdto mapToDto(Post post){
-        Postdto dto=new Postdto();
-        dto.setId(post.getId());
-        dto.setTitle(post.getTitle());
-        dto.setContent(post.getContent());
-        dto.setDescription(post.getDescription());
-
-         return  dto;
+//        Postdto dto=new Postdto();
+//        dto.setId(post.getId());
+//        dto.setTitle(post.getTitle());
+//        dto.setContent(post.getContent());
+//        dto.setDescription(post.getDescription());
+        //Using the modelMapper External Libre=ary we short the code length such that it will improve the copying the data
+        //from the entity to dto or dto to entity
+        Postdto dtos= modelMapper.map(post, Postdto.class);
+         return  dtos;
         }
 
         //Create A Method to Convert The Postdto(Dto Class) into Post(Entity Class)
    public Post mapToPost(Postdto dto){
-        Post post=new Post();
-        post.setContent(dto.getContent());
-        post.setTitle(dto.getTitle());
-        post.setDescription(dto.getDescription());
+        Post post=modelMapper.map(dto,Post.class);
         return post;
     }
 }

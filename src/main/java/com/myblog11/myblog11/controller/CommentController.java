@@ -2,6 +2,7 @@ package com.myblog11.myblog11.controller;
 
 import com.myblog11.myblog11.payload.CommentDto;
 import com.myblog11.myblog11.service.impl.CommentServiceImpl;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
 
     private CommentServiceImpl commentService;
+    //create the external library bean ,here the bean will not create by Spring IOC due to not given information,
+    //we must have to create the @bean annotation method of modelmapper(any external library) within @SpringBootApplication class
 
     public CommentController(CommentServiceImpl commentService) {
         this.commentService = commentService;
@@ -26,7 +29,6 @@ public class CommentController {
             @RequestParam long postId
     ){
         CommentDto dtos = commentService.createComment(commentDto, postId);
-
         return new ResponseEntity<>(dtos, HttpStatus.CREATED);
     }
 
@@ -39,4 +41,18 @@ public class CommentController {
         commentService.deleteComments(id);
         return new ResponseEntity<>("Comment Is Deleted",HttpStatus.OK);
     }
+
+
+    //3.Using the external librarey to short the code line in the program we create the UPDATE comments feature
+    //url->http://localhost:8080/api/comments/update/1
+     //3.Using the external librarey to short the code line in the program we create the UPDATE comments feature
+    //url->http://localhost:8080/api/comments/update/1/post/3
+    @PutMapping("/update/{id}/post/{postId}")
+    public <postId> ResponseEntity<?> updateComment(@PathVariable long id, @RequestBody CommentDto commentDto,@PathVariable long postId
+    ){
+
+        CommentDto Dto = commentService.updateComment(id, commentDto,postId);
+        return new ResponseEntity<>(Dto,HttpStatus.OK);
+    }
+
 }

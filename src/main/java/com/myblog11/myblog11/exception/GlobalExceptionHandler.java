@@ -14,7 +14,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)  //used to define a specific exception class will gonna Handled Here
     public ResponseEntity<ErrorDetails> handleIndResourceNotFoundException(
             ResourceNotFoundException r,
-            WebRequest webrequest
+            WebRequest webrequest//it give the description of the URI where error occur that's
     ){
         ErrorDetails errorDetails=new ErrorDetails(r.getMessage(),new Date(),webrequest.getDescription(true));
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
