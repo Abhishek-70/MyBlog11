@@ -20,6 +20,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     // Define a UserDetailsService (you can replace this with your custom implementation)
+    //This method is used to perform the InMemory Authentication by saving the Object Details into the Object.(UserDetailsService)
     @Bean
     @Override
     public UserDetailsService userDetailsServiceBean() throws Exception {
@@ -50,8 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/**").permitAll() // Permit access to /public/**
-                .antMatchers(HttpMethod.POST,"/api/**").hasRole("ADMIN") // Require ADMIN role for /admin/**
+                .antMatchers(HttpMethod.POST,"/api/post").hasRole("ADMIN") // Require ADMIN role for /api/**
                 .antMatchers("/api/comment/**").hasRole("USER") // Require USER role for /user/**
+                .antMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();

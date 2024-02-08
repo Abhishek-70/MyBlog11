@@ -33,7 +33,7 @@ public class CommentController {
     }
 
     //2.Delete comment from the database using the url
-    //url-> http://localhost:8080/api/comments , here pass the id for the comment to delete via (pathvariable/{id})
+    //url-> http://localhost:8080/api/comments/CommentId , here pass the id for the comment to delete via (pathvariable/{id})
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteComment(
             @PathVariable long id
@@ -43,14 +43,15 @@ public class CommentController {
     }
 
 
-    //3.Using the external librarey to short the code line in the program we create the UPDATE comments feature
+    //3.Using the external library to short the code line in the program we create the UPDATE comments feature
     //url->http://localhost:8080/api/comments/update/1
      //3.Using the external librarey to short the code line in the program we create the UPDATE comments feature
     //url->http://localhost:8080/api/comments/update/1/post/3
     @PutMapping("/update/{id}/post/{postId}")
     public <postId> ResponseEntity<?> updateComment(@PathVariable long id, @RequestBody CommentDto commentDto,@PathVariable long postId
     ){
-
+        //here BUG occur we will not only set the comment with their id,or postId if we update the comment which will not even occur
+        // it will take the postId and CommentId ,and set it into the database
         CommentDto Dto = commentService.updateComment(id, commentDto,postId);
         return new ResponseEntity<>(Dto,HttpStatus.OK);
     }

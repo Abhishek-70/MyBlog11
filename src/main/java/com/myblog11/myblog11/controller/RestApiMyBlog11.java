@@ -1,5 +1,6 @@
 package com.myblog11.myblog11.controller;
 
+import com.myblog11.myblog11.exception.ResourceNotFoundException;
 import com.myblog11.myblog11.payload.Postdto;
 import com.myblog11.myblog11.service.postservice;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class RestApiMyBlog11 {
     }
 
 
-    //for Accessing this data we Have To Use url In postman (http.//localhost:8080/api/myblog?id=12
+    //for Accessing this data we Have To Use url In postman (http://localhost:8080/api/blog?id=12),Set the Request->GET
     //Here We handle the Exception Occured while Accessing through invalid id number
     @GetMapping
     public ResponseEntity<?> getById(@RequestParam long id){
@@ -41,7 +42,7 @@ public class RestApiMyBlog11 {
             }
 
 //now we Get The Data From the Database Using The Technique Stream Api
-    //url-> http://localhost:8080/api/myblog/getAll
+    //url-> http://localhost:8080/api/blog/getAll
     @GetMapping("/getAll")
    public List<Postdto> getAllData(){
         List<Postdto> fdtos = postserv.getAllData();
@@ -97,4 +98,13 @@ public class RestApiMyBlog11 {
         return new ResponseEntity<>("post is Deleted",HttpStatus.OK);
     }
 
+//    @PutMapping
+//    public ResponseEntity<?> updatePostById(@PathVariable long id,@RequestBody Postdto postdto){
+//        Postdto postById = postserv.getPostById(id);
+//        if(postById.){
+//
+//        }else{
+//            throw new ResourceNotFoundException("Post Not Found By This ID:"+id);
+//        }
+  //  }
 }
