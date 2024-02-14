@@ -50,10 +50,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/**").permitAll() // Permit access to /public/**
-                .antMatchers(HttpMethod.POST,"/api/post").hasRole("ADMIN") // Require ADMIN role for /api/**
-                .antMatchers("/api/comment/**").hasRole("USER") // Require USER role for /user/**
-                .antMatchers("/api/auth/**").permitAll()
+ //               .antMatchers("/api/**").permitAll() // Permit access to /public/**
+//                .antMatchers(HttpMethod.POST,"/api/post").hasRole("ADMIN") // Require ADMIN role for /api/**
+//                .antMatchers("/api/comment/**").hasRole("USER") // Require USER role for /user/**
+//                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/auth/signUp").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
