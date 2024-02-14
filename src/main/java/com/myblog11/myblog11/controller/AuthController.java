@@ -9,7 +9,11 @@ import com.myblog11.myblog11.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,13 +39,20 @@ public class AuthController {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     //2.Here we created the feature of signIn to understand the concept of Authentication.
     @PostMapping("/signIn")
     public ResponseEntity<?> authentication(@RequestBody LogInDto logInDto){
-        new UsernamePasswordAuthenticationToken(logInDto.getUserNameOrEmail(),logInDto.getPassword());
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(logInDto.getUserNameOrEmail(), logInDto.getPassword());
         //this will supply userName to the CustomUserService Layer-> in loadByUserName(String userName).
 
-
+        Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+//Here we compair the data coming from both different places and got the result that if this exists or not,
+        //now we go create a session variable here
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        return new ResponseEntity<>("User Sign In succcessfully!",HttpStatus.OK);
     }
 
     //1.created signUp Page here to sign-Up the User

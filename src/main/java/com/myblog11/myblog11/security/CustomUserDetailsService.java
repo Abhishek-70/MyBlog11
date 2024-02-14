@@ -38,6 +38,7 @@ public class CustomUserDetailsService implements UserDetailsService{
     }
 
     private Collection<? extends GrantedAuthority> mapRoleToAuthorities(Set<Role> roles) {
+        // grantedAuthority  is inbuilt concept that take care of the authorization based on the  Role.
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
 }
