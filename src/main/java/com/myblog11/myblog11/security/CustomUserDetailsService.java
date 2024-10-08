@@ -27,7 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService{
 
     //This method is overloaded from the spring security import,
     //this method Automatically takes the userName From the authentication(), From the UserNamePasswordAuthenticationClass is give the
-    //UserName value to this Method() the userName containt.
+    //UserName value to this Method() the userName contain.
     @Override
     public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
         User user = userRepository.findByUserNameOrEmail(usernameOrEmail, usernameOrEmail)

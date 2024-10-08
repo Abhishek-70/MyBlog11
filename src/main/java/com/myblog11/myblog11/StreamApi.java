@@ -29,11 +29,11 @@ public class StreamApi {
 //        List<Integer> evenNumber = list.stream().filter(x -> x % 2 == 0).collect(Collectors.toList());
 //        System.out.println(evenNumber);
 
-        List<String> names = Arrays.asList("mike", "Stallin", "world", "Jackson", "mike");
+        List<String> names = Arrays.asList("mike", "sai_yam", "world", "Jackson", "mike");
         List<String> res1 = names.stream().filter(a -> a.equals("mike")).collect(Collectors.toList());
         System.out.println(res1);
 
-        //we can use AS much methods present in the filter() method which take the predicate syntax.
+        //we can use multiple methods present in the filter() method which take the predicate syntax.
         List<Integer> nums = Arrays.asList(12, 10, 13, 19, 29, 38, 48, 50);
         List<Integer> outputData = nums.stream().filter(a -> a / 2 != 0).collect(Collectors.toList());
         System.out.println(outputData);
