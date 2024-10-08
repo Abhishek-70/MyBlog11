@@ -6,6 +6,7 @@ import com.myblog11.myblog11.payload.LogInDto;
 import com.myblog11.myblog11.payload.SignUpDto;
 import com.myblog11.myblog11.repository.RoleRepository;
 import com.myblog11.myblog11.repository.UserRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,19 +44,21 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     //2.Here we created the feature of signIn to understand the concept of Authentication.
+    //http://localhost:8080/api/auth/signIn, with a logIn Dto
     @PostMapping("/signIn")
-    public ResponseEntity<?> authentication(@RequestBody LogInDto logInDto){
+    public ResponseEntity<?> authentication(@RequestBody @NotNull LogInDto logInDto){
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(logInDto.getUserNameOrEmail(), logInDto.getPassword());
-        //this will supply userName to the CustomUserService Layer-> in loadByUserName(String userName).
+        //this will supply userName to the CustomUserDetailsService Layer-> in loadByUserName(String userName).
 
         Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-//Here we compair the data coming from both different places and got the result that if this exists or not,
+      //Here we compare the data coming from both different places and got the result that if this exists or not,
+
         //now we go create a session variable here
         SecurityContextHolder.getContext().setAuthentication(authenticate);
-        return new ResponseEntity<>("User Sign In succcessfully!",HttpStatus.OK);
+        return new ResponseEntity<>("User Sign In successfully!",HttpStatus.OK);
     }
 
-    //1.created signUp Page here to sign-Up the User
+    //1.created signUp Page here to sign_Up the User
     //url->http://localhost:8080/api/auth/signUp, set requesst-> POST
     @PostMapping("/signUp")
     public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto) {
@@ -73,7 +76,7 @@ public class AuthController {
 
 //Here we came after the concept of Role class is defined as we came here to set the User Role,
         //using which we have Use the object of roleRepository
-        Role roles = roleRepository.findByName(user.getRoleType()).get();
+       Role roles = roleRepository.findByName(user.getRoleType()).get();
 
         //her the return type is SET<> then we must have to convert it into set<>
 
